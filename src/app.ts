@@ -16,13 +16,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Morgan Logger
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 // cors setUp
-app.use(cors({
-  credentials: true,
-  origin: ['http://localhost:4200', 'http://localhost:3000']
-}));
+app.use(
+  cors({
+    credentials: true,
+    origin: ["http://localhost:4200", "http://localhost:3000"],
+  })
+);
 
 // Cookie Parser
 app.use(cookieParser());

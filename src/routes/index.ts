@@ -8,5 +8,5 @@ export const routes = (app: Express) => {
     });
   });
 
-  app.use('/posts', new PostRoutes().getRouter())
+  app.use("/posts", new PostRoutes().getRouter());
 };
