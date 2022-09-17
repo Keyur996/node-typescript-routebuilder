@@ -1,0 +1,5 @@
+/node_modules
+.dbdata
+.env
+.vscode
+package-lock.json
