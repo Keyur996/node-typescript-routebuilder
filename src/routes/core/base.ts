@@ -2,7 +2,7 @@ import { Model } from "mongoose";
 import express, { IRouter, NextFunction, Response } from "express";
 import { IRequest, ReqTypes } from "./base.type";
 import { GetMethods, GetReqType, Methods, OtherReqTypes } from "./base.enum";
-import _ from "lodash";
+import forEach from "lodash/forEach";
 import { Generator } from "./generator";
 
 interface IEntity {
@@ -30,7 +30,7 @@ export class Base extends Generator {
     methods: Array<GetMethods | Methods>
   ) {
     this.entity.types[verb] = this.entity.types[verb] ?? {};
-    _.forEach(methods, (_method: "ONE" | "ONESOFT" | "ALL") => {
+    forEach(methods, (_method: "ONE" | "ONESOFT" | "ALL") => {
       this.entity.types[verb]![_method] = {
         after: this.entity.types[verb]?.[_method]?.after ?? this.noopMiddleWare,
         before:
