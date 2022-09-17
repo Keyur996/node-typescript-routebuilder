@@ -6,7 +6,12 @@
   "scripts": {
     "start": "nodemon src/index.ts"
   },
-  "keywords": [],
+  "keywords": [
+    "Typescript",
+    "Node JS",
+    "Express",
+    "MongoDB"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
