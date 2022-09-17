@@ -11,12 +11,11 @@ interface IEntity {
   types: ReqTypes;
 }
 
-export class Base {
+export class Base extends Generator {
   private readonly entity: IEntity;
   private router: IRouter = express.Router();
-  private resource: Generator;
   constructor(entity: IEntity) {
-    this.resource = new Generator(entity.model);
+    super(entity.model);
     this.entity = entity;
     this.activate();
   }
@@ -77,7 +76,7 @@ export class Base {
         .route("/")
         .get(
           this.entity.types[GetReqType.GET]![GetMethods.ALL].before,
-          this.resource.getAllRoute,
+          this.getAllRoute,
           this.entity.types[GetReqType.GET]![GetMethods.ALL].after
         );
 
@@ -85,7 +84,7 @@ export class Base {
         .route("/:id")
         .get(
           this.entity.types[GetReqType.GET]![GetMethods.ONE].before,
-          this.resource.getOneRoute,
+          this.getOneRoute,
           this.entity.types[GetReqType.GET]![GetMethods.ONE].after
         );
     }
@@ -97,7 +96,7 @@ export class Base {
         .route("/")
         .post(
           this.entity.types[OtherReqTypes.POST]![Methods.ONE].before,
-          this.resource.createOneRoute,
+          this.createOneRoute,
           this.entity.types[OtherReqTypes.POST]![Methods.ONE].after
         );
 
@@ -105,7 +104,7 @@ export class Base {
         .route("/draft")
         .post(
           this.entity.types[OtherReqTypes.POST]![Methods.ONESOFT].before,
-          this.resource.createOneRoute,
+          this.createOneRoute,
           this.entity.types[OtherReqTypes.POST]![Methods.ONESOFT].after
         );
     }
@@ -117,7 +116,7 @@ export class Base {
         .route("/:id")
         .patch(
           this.entity.types[OtherReqTypes.PATCH]![Methods.ONE].before,
-          this.resource.updateOneRoute,
+          this.updateOneRoute,
           this.entity.types[OtherReqTypes.PATCH]![Methods.ONE].after
         );
 
@@ -125,7 +124,7 @@ export class Base {
         .route("/:id/draft")
         .patch(
           this.entity.types[OtherReqTypes.PATCH]![Methods.ONESOFT].before,
-          this.resource.updateOneRoute,
+          this.updateOneRoute,
           this.entity.types[OtherReqTypes.PATCH]![Methods.ONESOFT].after
         );
     }
@@ -137,7 +136,7 @@ export class Base {
         .route("/:id")
         .put(
           this.entity.types[OtherReqTypes.PUT]![Methods.ONE].before,
-          this.resource.updateOneRoute,
+          this.updateOneRoute,
           this.entity.types[OtherReqTypes.PUT]![Methods.ONE].after
         );
 
@@ -145,7 +144,7 @@ export class Base {
         .route("/:id/draft")
         .put(
           this.entity.types[OtherReqTypes.PUT]![Methods.ONESOFT].before,
-          this.resource.updateOneRoute,
+          this.updateOneRoute,
           this.entity.types[OtherReqTypes.PUT]![Methods.ONESOFT].after
         );
     }

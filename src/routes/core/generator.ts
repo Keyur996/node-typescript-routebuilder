@@ -11,7 +11,7 @@ export class Generator {
     this.model = model;
   }
 
-  getOneRoute = asyncHandler(
+  protected getOneRoute = asyncHandler(
     async (req: IRequest, _res: Response, next: NextFunction) => {
       const doc = await this.model.findById(req.params.id).lean();
       if (!doc) {
@@ -22,7 +22,7 @@ export class Generator {
     }
   );
 
-  getAllRoute = asyncHandler(
+  protected getAllRoute = asyncHandler(
     async (req: IRequest, _res: Response, next: NextFunction) => {
       const query: any = this.model.find(req.query ?? {});
       if (req.query?.select) {
@@ -37,7 +37,7 @@ export class Generator {
     }
   );
 
-  updateOneRoute = asyncHandler(
+  protected updateOneRoute = asyncHandler(
     async (req: IRequest, _res: Response, next: NextFunction) => {
       const doc = await this.model.findByIdAndUpdate(req.params.id, req.body, {
         returnDocument: "after",
@@ -51,7 +51,7 @@ export class Generator {
     }
   );
 
-  deleteOneRoute = asyncHandler(
+  protected deleteOneRoute = asyncHandler(
     async (req: IRequest, _res: Response, next: NextFunction) => {
       const doc = await this.model.findByIdAndDelete(req.params.id);
 
@@ -63,7 +63,7 @@ export class Generator {
     }
   );
 
-  createOneRoute = asyncHandler(
+  protected createOneRoute = asyncHandler(
     async (req: IRequest, _res: Response, next: NextFunction) => {
       const doc = await this.model.create(req.body);
       req.data = doc;
