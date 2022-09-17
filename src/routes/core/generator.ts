@@ -5,7 +5,7 @@ import { ErrorResponse } from "./error";
 import asyncHandler from "express-async-handler";
 
 export class Generator {
-  model: Model<any>;
+  private model: Model<any>;
 
   constructor(model: Model<any>) {
     this.model = model;

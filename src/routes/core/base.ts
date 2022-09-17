@@ -11,11 +11,12 @@ interface IEntity {
   types: ReqTypes;
 }
 
-export class Base extends Generator {
+export class Base {
   private readonly entity: IEntity;
   private router: IRouter = express.Router();
+  private resource: Generator;
   constructor(entity: IEntity) {
-    super(entity.model);
+    this.resource = new Generator(entity.model);
     this.entity = entity;
     this.activate();
   }
@@ -59,6 +60,10 @@ export class Base extends Generator {
     return this.router;
   }
 
+  getModel() {
+    return this.entity.model;
+  }
+
   private setRouter() {
     this.setGetRoutes();
     this.setPostRoutes();
@@ -72,7 +77,7 @@ export class Base extends Generator {
         .route("/")
         .get(
           this.entity.types[GetReqType.GET]![GetMethods.ALL].before,
-          this.getAllRoute,
+          this.resource.getAllRoute,
           this.entity.types[GetReqType.GET]![GetMethods.ALL].after
         );
 
@@ -80,7 +85,7 @@ export class Base extends Generator {
         .route("/:id")
         .get(
           this.entity.types[GetReqType.GET]![GetMethods.ONE].before,
-          this.getOneRoute,
+          this.resource.getOneRoute,
           this.entity.types[GetReqType.GET]![GetMethods.ONE].after
         );
     }
@@ -92,7 +97,7 @@ export class Base extends Generator {
         .route("/")
         .post(
           this.entity.types[OtherReqTypes.POST]![Methods.ONE].before,
-          this.createOneRoute,
+          this.resource.createOneRoute,
           this.entity.types[OtherReqTypes.POST]![Methods.ONE].after
         );
 
@@ -100,7 +105,7 @@ export class Base extends Generator {
         .route("/draft")
         .post(
           this.entity.types[OtherReqTypes.POST]![Methods.ONESOFT].before,
-          this.createOneRoute,
+          this.resource.createOneRoute,
           this.entity.types[OtherReqTypes.POST]![Methods.ONESOFT].after
         );
     }
@@ -112,7 +117,7 @@ export class Base extends Generator {
         .route("/:id")
         .patch(
           this.entity.types[OtherReqTypes.PATCH]![Methods.ONE].before,
-          this.updateOneRoute,
+          this.resource.updateOneRoute,
           this.entity.types[OtherReqTypes.PATCH]![Methods.ONE].after
         );
 
@@ -120,7 +125,7 @@ export class Base extends Generator {
         .route("/:id/draft")
         .patch(
           this.entity.types[OtherReqTypes.PATCH]![Methods.ONESOFT].before,
-          this.updateOneRoute,
+          this.resource.updateOneRoute,
           this.entity.types[OtherReqTypes.PATCH]![Methods.ONESOFT].after
         );
     }
@@ -132,7 +137,7 @@ export class Base extends Generator {
         .route("/:id")
         .put(
           this.entity.types[OtherReqTypes.PUT]![Methods.ONE].before,
-          this.updateOneRoute,
+          this.resource.updateOneRoute,
           this.entity.types[OtherReqTypes.PUT]![Methods.ONE].after
         );
 
@@ -140,7 +145,7 @@ export class Base extends Generator {
         .route("/:id/draft")
         .put(
           this.entity.types[OtherReqTypes.PUT]![Methods.ONESOFT].before,
-          this.updateOneRoute,
+          this.resource.updateOneRoute,
           this.entity.types[OtherReqTypes.PUT]![Methods.ONESOFT].after
         );
     }
