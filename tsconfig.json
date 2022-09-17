@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "outDir": "dist",                          
+    "rootDir": "src",
     "suppressImplicitAnyIndexErrors": true,
     "target": "es2018" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "module": "commonjs" /* Specify what module code is generated. */,
