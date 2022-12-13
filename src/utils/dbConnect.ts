@@ -1,8 +1,8 @@
 // ============== Import Packages ================
-import { MongoClient, MongoClientOptions } from 'mongodb';
+import { ConnectOptions, connect } from 'mongoose';
 // ===============================================
 export default class DBConnection {
-    static readonly defaultOptions: MongoClientOptions = {
+    static readonly defaultOptions: ConnectOptions = {
         compressors: ['snappy']
     };
 
@@ -10,22 +10,16 @@ export default class DBConnection {
         // do nothing
     }
 
-    static readonly connect = async (
-        uri: string,
-        options?: MongoClientOptions
-    ) => {
+    static readonly connect = async (uri: string, options?: ConnectOptions) => {
         try {
-            const client = new MongoClient(uri, {
+            const mongoose = await connect(uri, {
                 ...this.defaultOptions,
                 ...options
             });
-            // Connect the client to the server.
-            await client.connect();
-            // Establish and verify connection.
-            await client.db('admin').command({ ping: 1 });
-            process.stdout.write('Connected successfully to Database !! :)');
+            mongoose.set('strictQuery', true);
+            process.stdout.write('Connected successfully to Database !! :) \n');
         } catch (err) {
-            process.stdout.write(`Something Went Wrong !! :( ===> ${err}`);
+            process.stdout.write(`Something Went Wrong !! :( ===> ${err} \n`);
         }
     };
 }

@@ -1,6 +1,5 @@
-import { Model } from 'mongoose';
 import express, { IRouter, NextFunction, Response } from 'express';
-import { IRequest, ReqTypes } from './types/base.type';
+import { IRequest } from './types/base.type';
 import {
     GetMethods,
     GetReqType,
@@ -9,12 +8,7 @@ import {
 } from '@constants/base.constant';
 import forEach from 'lodash/forEach';
 import { Generator } from './generator';
-
-interface IEntity<M> {
-    collection: string;
-    model: Model<M>;
-    types: ReqTypes;
-}
+import { IEntity } from './interfaces/entity.interface';
 
 export class Base<M> extends Generator<M> {
     private readonly entity: IEntity<M>;
