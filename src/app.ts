@@ -1,12 +1,12 @@
-// =============== Import Packages ============================
+// ==================== Import Packages ========================
 import hpp from 'hpp';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import xss from 'xss-clean';
+import express from 'express';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
-import express, { Express } from 'express';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 // =============================================================
 import { DB_URI, NODE_ENV, PORT } from '@/config';
@@ -46,9 +46,9 @@ export default class App {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(morgan('dev'));
+        this.app.use(xss());
         this.app.use(hpp());
         this.app.use(helmet());
-        this.app.use(xss());
         this.app.use(compression());
         this.app.use(cookieParser());
     };

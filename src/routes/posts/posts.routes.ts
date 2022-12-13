@@ -1,7 +1,7 @@
 import { IRouter, NextFunction, Response } from 'express';
 import { Post } from '../../models/post.entity';
-import { Base } from '../../lib/base';
-import { IRequest } from '../../lib/base.type';
+import { Base } from '../../lib/routebuilder/base';
+import { IRequest } from '../../lib/routebuilder/types/base.type';
 
 export class PostRoutes {
     private router: IRouter;

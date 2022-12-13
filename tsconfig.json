@@ -32,10 +32,11 @@
             "*": ["customTypes/*"],
             "@/*": ["*"],
             "@lib/*": ["lib/*"],
-            "@config": ["config"],
+            "@config/*": ["config"],
             "@utils/*": ["utils/*"],
             "@types/*": ["types/*"],
             "@routes/*": ["routes/*"],
+            "@constants/*": ["constants/*"],
             "@interfaces/*": ["interfaces/*"],
             "@exceptions/*": ["exceptions/*"],
             "@middlewares/*": ["middlewares/*"]

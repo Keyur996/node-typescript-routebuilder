@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
-import { IRequest } from '../lib/base.type';
-import { ErrorResponse } from '../lib/error';
+import { IRequest } from '../lib/routebuilder/types/base.type';
+import { HttpException } from '../exceptions/error';
 
 export const errorHandler = (
     err: any,
@@ -13,13 +13,13 @@ export const errorHandler = (
     console.log(err.message);
     if (err.name === 'CastError') {
         const message = 'Resource not found';
-        error = new ErrorResponse(message, 404);
+        error = new HttpException(message, 404);
     }
 
     // Mongoose duplicate key
     if (err.code === 11000) {
         const message = 'Duplicate field value entered';
-        error = new ErrorResponse(message, 400);
+        error = new HttpException(message, 400);
     }
 
     // Mongoose validation error
@@ -27,7 +27,7 @@ export const errorHandler = (
         const message = Object.values(err.errors)
             .map((val: any) => val.message)
             .toString();
-        error = new ErrorResponse(message, 400);
+        error = new HttpException(message, 400);
     }
 
     res.status(error.statusCode || 500).json({

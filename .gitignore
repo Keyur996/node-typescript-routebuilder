@@ -1,6 +1,10 @@
+# Default Packages
 /node_modules
 dist
 .dbdata
-.env
 .vscode
 package-lock.json
+# ENV 
+.env
+.env.development
+.env.production
