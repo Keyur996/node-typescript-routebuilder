@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 import { IRequest } from '../lib/routebuilder/types/base.type';
-import { HttpException } from '../exceptions/error';
+import { HttpException } from '../exceptions/HttpException';
 
 export const errorHandler = (
     err: any,

@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { Model } from 'mongoose';
 import { IRequest } from './types/base.type';
-import { HttpException } from '@exceptions/error';
+import { HttpException } from '@/exceptions/HttpException';
 import asyncHandler from 'express-async-handler';
 
 export class Generator<M> {
