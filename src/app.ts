@@ -1,47 +1,65 @@
-import express, { Express } from "express";
-import cookieParser from "cookie-parser";
-import morgan from "morgan";
-import cors from "cors";
-import helmet from "helmet";
-import hpp from "hpp";
-// @ts-ignore
-import xss from "xss-clean";
-import { routes } from "./routes";
-import { errorHandler } from "./middlewares/errorHandler";
+// =============== Import Packages ============================
+import hpp from 'hpp';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import xss from 'xss-clean';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import express, { Express } from 'express';
+import { Server, IncomingMessage, ServerResponse } from 'http';
+// =============================================================
+import { DB_URI, NODE_ENV, PORT } from '@/config';
+import DBConnection from '@utils/dbConnect';
+import { Route } from '@interfaces/route.interface';
+import { errorHandler } from '@middlewares/errorHandler';
 
-const app: Express = express();
+export default class App {
+    private readonly env: string;
+    private readonly port: number;
+    private readonly app: express.Application;
+    public server?: Server<typeof IncomingMessage, typeof ServerResponse>;
 
-// Body Parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+    constructor(routes: Route[]) {
+        this.app = express();
+        this.env = NODE_ENV || 'development';
+        this.port = (PORT && +PORT) || 5000;
+        this.setMiddlewares();
+        this.initializeRoutes(routes);
+        this.initializeErrorHandler();
+    }
 
-// Morgan Logger
-app.use(morgan("dev"));
+    public readonly listen = async () => {
+        this.server = this.app.listen(this.port, () => {
+            process.stdout.write(`
+              =====================================
+              ========= ENV: ${this.env} ==========
+              🚀 App listening on the port ${this.port}
+              =====================================
+            `);
+        });
+        await DBConnection.connect(DB_URI || '');
+    };
 
-// cors setUp
-app.use(
-  cors({
-    credentials: true,
-    origin: ["http://localhost:4200", "http://localhost:3000"],
-  })
-);
+    private readonly setMiddlewares = () => {
+        this.app.use(cors());
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(morgan('dev'));
+        this.app.use(hpp());
+        this.app.use(helmet());
+        this.app.use(xss());
+        this.app.use(compression());
+        this.app.use(cookieParser());
+    };
 
-// Cookie Parser
-app.use(cookieParser());
+    private readonly initializeRoutes = (routes: Route[]) => {
+        routes.map((route) => {
+            this.app.use('/', route.router);
+        });
+    };
 
-// helmet - For Setting Security Headers.
-app.use(helmet());
-
-// hpp - To prevent query String pollutation.
-app.use(hpp());
-
-// xss-clean
-app.use(xss());
-
-// Set Routes
-routes(app);
-
-// Error Handler MiddleWare
-app.use(errorHandler);
-
-export default app;
+    private readonly initializeErrorHandler = () => {
+        this.app.use(errorHandler);
+    };
+}

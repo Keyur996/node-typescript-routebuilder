@@ -1,13 +1,52 @@
 {
-  "compilerOptions": {
-    "outDir": "dist",                          
-    "rootDir": "src",
-    "suppressImplicitAnyIndexErrors": true,
-    "target": "es2018" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-    "module": "commonjs" /* Specify what module code is generated. */,
-    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
-    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-    "strict": true /* Enable all strict type-checking options. */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
-  }
+    "compileOnSave": false,
+    "compilerOptions": {
+        "target": "ES2017",
+        "lib": [
+            "ES2017",
+            "ESNext.asynciterable",
+            "ESNext.AsyncIterable",
+            "ESNext.Promise",
+            "ESNext.BigInt",
+            "ESNext.Intl"
+        ],
+        "typeRoots": ["node_modules/@types"],
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "pretty": true,
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+        "outDir": "dist",
+        "allowJs": true,
+        "noEmit": false,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "importHelpers": true,
+        "baseUrl": "src",
+        "paths": {
+            "*": ["customTypes/*"],
+            "@/*": ["*"],
+            "@lib/*": ["lib/*"],
+            "@config": ["config"],
+            "@utils/*": ["utils/*"],
+            "@types/*": ["types/*"],
+            "@routes/*": ["routes/*"],
+            "@interfaces/*": ["interfaces/*"],
+            "@exceptions/*": ["exceptions/*"],
+            "@middlewares/*": ["middlewares/*"]
+        }
+    },
+    "include": ["src/**/*.ts", "src/**/*.json", ".env"],
+    "exclude": [
+        "node_modules",
+        "src/http",
+        "src/logs",
+        "src/tests",
+        "src/customTypes/*"
+    ]
 }
