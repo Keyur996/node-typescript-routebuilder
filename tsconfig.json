@@ -30,6 +30,7 @@
       "@utils/*": ["utils/*"],
       "@types/*": ["types/*"],
       "@routes/*": ["routes/*"],
+      "@models/*": ["models/*"],
       "@constants/*": ["constants/*"],
       "@interfaces/*": ["interfaces/*"],
       "@exceptions/*": ["exceptions/*"],

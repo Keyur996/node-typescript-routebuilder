@@ -1,8 +1,8 @@
 // ============== Import Packages ================
-import { ConnectOptions, connect } from 'mongoose';
+import mongoose from 'mongoose';
 // ===============================================
-export default class DBConnection {
-  static readonly defaultOptions: ConnectOptions = {
+export default class MongoConnect {
+  static readonly defaultOptions: mongoose.ConnectOptions = {
     compressors: ['snappy'],
   };
 
@@ -10,13 +10,13 @@ export default class DBConnection {
     // do nothing
   }
 
-  static readonly connect = async (uri: string, options?: ConnectOptions) => {
+  static readonly connect = async (uri: string, options?: mongoose.ConnectOptions) => {
     try {
-      const mongoose = await connect(uri, {
+      mongoose.set('strictQuery', true);
+      const connection = await mongoose.connect(uri, {
         ...this.defaultOptions,
         ...options,
       });
-      mongoose.set('strictQuery', true);
       process.stdout.write('Connected successfully to Database !! :) \n');
     } catch (err) {
       process.stdout.write(`Something Went Wrong !! :( ===> ${err} \n`);

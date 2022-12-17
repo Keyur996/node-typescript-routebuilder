@@ -1,10 +1,10 @@
 import { Request, RequestHandler } from 'express';
-import { GetMethods, GetReqType, Methods, OtherReqTypes } from '../../../constants/base.constant';
+import { Methods, ReqTypes } from './../constants/base.constant';
 
 type GetType = {
-  [key in GetReqType]?:
+  [key in Extract<ReqTypes, 'GET'>]?:
     | {
-        [key in GetMethods]?:
+        [key in Exclude<Methods, 'ONESOFT'>]?:
           | {
               after?: RequestHandler;
               before?: RequestHandler;
@@ -15,9 +15,9 @@ type GetType = {
 };
 
 type OtherTypes = {
-  [key in OtherReqTypes]?:
+  [key in Exclude<ReqTypes, 'GET'>]?:
     | {
-        [key in Methods]?:
+        [key in Exclude<Methods, 'ALL'>]?:
           | {
               after?: RequestHandler;
               before?: RequestHandler;
@@ -32,4 +32,4 @@ export interface IRequest extends Request {
   status?: number;
 }
 
-export type ReqTypes = OtherTypes & GetType;
+export type ReqTypesObj = OtherTypes & GetType;

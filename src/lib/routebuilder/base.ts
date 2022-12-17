@@ -1,6 +1,6 @@
 import express, { IRouter, NextFunction, Response } from 'express';
 import { IRequest } from './types/base.type';
-import { GetMethods, GetReqType, Methods, OtherReqTypes } from '@constants/base.constant';
+import { Methods, ReqTypes } from './constants/base.constant';
 import forEach from 'lodash/forEach';
 import { Generator } from './generator';
 import { IEntity } from './interfaces/entity.interface';
@@ -19,10 +19,10 @@ export class Base<M> extends Generator<M> {
     this.setRouter();
   }
 
-  private configureVerbs(verb: OtherReqTypes | 'GET', methods: Array<GetMethods | Methods>) {
+  private configureVerbs(verb: ReqTypes, methods: Methods[]) {
     this.entity.types[verb] = this.entity.types[verb] ?? {};
     forEach(methods, (_method: 'ONE' | 'ONESOFT' | 'ALL') => {
-      this.entity.types[verb]![_method] = {
+      this.entity.types[verb][_method] = {
         after: this.entity.types[verb]?.[_method]?.after ?? this.noopMiddleWare,
         before: this.entity.types[verb]?.[_method]?.before ?? this.noopMiddleWare,
       };
@@ -30,10 +30,10 @@ export class Base<M> extends Generator<M> {
   }
 
   private configureOptions() {
-    this.configureVerbs('GET', [GetMethods.ONE, GetMethods.ALL]);
-    this.configureVerbs(OtherReqTypes.POST, [Methods.ONE, Methods.ONESOFT]);
-    this.configureVerbs(OtherReqTypes.PATCH, [Methods.ONE, Methods.ONESOFT]);
-    this.configureVerbs(OtherReqTypes.PUT, [Methods.ONE, Methods.ONESOFT]);
+    this.configureVerbs(ReqTypes.GET, [Methods.ONE, Methods.ALL]);
+    this.configureVerbs(ReqTypes.POST, [Methods.ONE, Methods.ONESOFT]);
+    this.configureVerbs(ReqTypes.PATCH, [Methods.ONE, Methods.ONESOFT]);
+    this.configureVerbs(ReqTypes.PUT, [Methods.ONE, Methods.ONESOFT]);
   }
 
   private noopMiddleWare(req: IRequest, res: Response, next: NextFunction) {
@@ -65,17 +65,17 @@ export class Base<M> extends Generator<M> {
       this.router
         .route('/')
         .get(
-          this.entity.types[GetReqType.GET]![GetMethods.ALL].before,
+          this.entity.types?.[ReqTypes.GET]?.[Methods.ALL]?.before,
           this.getAllRoute,
-          this.entity.types[GetReqType.GET]![GetMethods.ALL].after,
+          this.entity.types?.[ReqTypes.GET]?.[Methods.ALL]?.after,
         );
 
       this.router
         .route('/:id')
         .get(
-          this.entity.types[GetReqType.GET]![GetMethods.ONE].before,
+          this.entity.types?.[ReqTypes.GET]?.[Methods.ONE]?.before,
           this.getOneRoute,
-          this.entity.types[GetReqType.GET]![GetMethods.ONE].after,
+          this.entity.types?.[ReqTypes.GET]?.[Methods.ONE]?.after,
         );
     }
   }
@@ -85,17 +85,17 @@ export class Base<M> extends Generator<M> {
       this.router
         .route('/')
         .post(
-          this.entity.types[OtherReqTypes.POST]![Methods.ONE].before,
+          this.entity.types?.[ReqTypes.POST]?.[Methods.ONE]?.before,
           this.createOneRoute,
-          this.entity.types[OtherReqTypes.POST]![Methods.ONE].after,
+          this.entity.types?.[ReqTypes.POST]?.[Methods.ONE]?.after,
         );
 
       this.router
         .route('/draft')
         .post(
-          this.entity.types[OtherReqTypes.POST]![Methods.ONESOFT].before,
+          this.entity.types?.[ReqTypes.POST]?.[Methods.ONESOFT]?.before,
           this.createOneRoute,
-          this.entity.types[OtherReqTypes.POST]![Methods.ONESOFT].after,
+          this.entity.types?.[ReqTypes.POST]?.[Methods.ONESOFT]?.after,
         );
     }
   }
@@ -105,17 +105,17 @@ export class Base<M> extends Generator<M> {
       this.router
         .route('/:id')
         .patch(
-          this.entity.types[OtherReqTypes.PATCH]![Methods.ONE].before,
+          this.entity.types?.[ReqTypes.PATCH]?.[Methods.ONE]?.before,
           this.updateOneRoute,
-          this.entity.types[OtherReqTypes.PATCH]![Methods.ONE].after,
+          this.entity.types?.[ReqTypes.PATCH]?.[Methods.ONE]?.after,
         );
 
       this.router
         .route('/:id/draft')
         .patch(
-          this.entity.types[OtherReqTypes.PATCH]![Methods.ONESOFT].before,
+          this.entity.types?.[ReqTypes.PATCH]?.[Methods.ONESOFT]?.before,
           this.updateOneRoute,
-          this.entity.types[OtherReqTypes.PATCH]![Methods.ONESOFT].after,
+          this.entity.types?.[ReqTypes.PATCH]?.[Methods.ONESOFT]?.after,
         );
     }
   }
@@ -125,17 +125,17 @@ export class Base<M> extends Generator<M> {
       this.router
         .route('/:id')
         .put(
-          this.entity.types[OtherReqTypes.PUT]![Methods.ONE].before,
+          this.entity.types?.[ReqTypes.PUT]?.[Methods.ONE]?.before,
           this.updateOneRoute,
-          this.entity.types[OtherReqTypes.PUT]![Methods.ONE].after,
+          this.entity.types?.[ReqTypes.PUT]?.[Methods.ONE]?.after,
         );
 
       this.router
         .route('/:id/draft')
         .put(
-          this.entity.types[OtherReqTypes.PUT]![Methods.ONESOFT].before,
+          this.entity.types?.[ReqTypes.PUT]?.[Methods.ONESOFT]?.before,
           this.updateOneRoute,
-          this.entity.types[OtherReqTypes.PUT]![Methods.ONESOFT].after,
+          this.entity.types?.[ReqTypes.PUT]?.[Methods.ONESOFT]?.after,
         );
     }
   }

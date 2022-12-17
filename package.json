@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "rimraf ./dist && swc src -d dist --copy-files",
-    "start": "npm run build && node dist/index.js",
+    "start": "npm run build && NODE_ENV=development node dist/index.js",
+    "lint": "eslint --ignore-path .gitignore --ext .ts src/",
+    "lint:fix": "npm run lint -- --fix",
     "dev": "nodemon src/index.ts",
     "prepare": "husky install"
   },

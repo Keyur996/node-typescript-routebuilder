@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 // =============================================================
 import { DB_URI, NODE_ENV, PORT } from '@/config';
-import DBConnection from '@utils/dbConnect';
+import MongoConnect from '@/conenctions/dbConnect';
 import { Route } from '@interfaces/route.interface';
 import { errorHandler } from '@middlewares/errorHandler';
 
@@ -30,15 +30,13 @@ export default class App {
   }
 
   public readonly listen = async () => {
+    await MongoConnect.connect(DB_URI || '');
     this.server = this.app.listen(this.port, () => {
-      process.stdout.write(`
-              =====================================
-              ========= ENV: ${this.env} ==========
-              🚀 App listening on the port ${this.port}
-              =====================================
-            `);
+      process.stdout.write('=====================================\n');
+      process.stdout.write(`========= ENV: ${this.env} ==========\n`);
+      process.stdout.write(`  🚀 App listening on the port ${this.port}\n`);
+      process.stdout.write(`=====================================\n`);
     });
-    await DBConnection.connect(DB_URI || '');
   };
 
   private readonly setMiddlewares = () => {
