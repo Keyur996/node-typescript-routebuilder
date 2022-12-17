@@ -1,8 +1,9 @@
 import { Model } from 'mongoose';
-import { ReqTypesObj } from '../types/base.type';
+import { ReqMethodTypes } from '../types/base.type';
 
 export interface IEntity<M> {
-  collection: string;
-  model: Model<M>;
-  types: ReqTypesObj;
+  readonly path: string;
+  readonly collection: string;
+  readonly model: Model<M>;
+  types: ReqMethodTypes;
 }

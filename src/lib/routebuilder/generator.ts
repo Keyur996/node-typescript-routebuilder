@@ -4,7 +4,7 @@ import { IRequest } from './types/base.type';
 import { HttpException } from '@/exceptions/HttpException';
 import asyncHandler from 'express-async-handler';
 
-export class Generator<M> {
+export default abstract class Generator<M> {
   private model: Model<M>;
 
   constructor(model: Model<M>) {

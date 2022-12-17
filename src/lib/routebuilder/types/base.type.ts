@@ -1,30 +1,22 @@
-import { Request, RequestHandler } from 'express';
+// *** Import Packages ***
+import { Request } from 'express';
+
+// *** Constants ***
 import { Methods, ReqTypes } from './../constants/base.constant';
 
 type GetType = {
   [key in Extract<ReqTypes, 'GET'>]?:
     | {
-        [key in Exclude<Methods, 'ONESOFT'>]?:
-          | {
-              after?: RequestHandler;
-              before?: RequestHandler;
-            }
-          | {};
+        [key in Exclude<Methods, 'ONESOFT'>]?: boolean;
       }
-    | {};
+    | boolean;
 };
-
 type OtherTypes = {
   [key in Exclude<ReqTypes, 'GET'>]?:
     | {
-        [key in Exclude<Methods, 'ALL'>]?:
-          | {
-              after?: RequestHandler;
-              before?: RequestHandler;
-            }
-          | {};
+        [key in Exclude<Methods, 'ALL'>]?: boolean;
       }
-    | {};
+    | boolean;
 };
 
 export interface IRequest extends Request {
@@ -32,4 +24,4 @@ export interface IRequest extends Request {
   status?: number;
 }
 
-export type ReqTypesObj = OtherTypes & GetType;
+export type ReqMethodTypes = OtherTypes & GetType;
