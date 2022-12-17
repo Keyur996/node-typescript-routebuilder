@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf ./dist && tsc",
+    "build": "rimraf ./dist && swc src -d dist --copy-files",
     "start": "npm run build && node dist/index.js",
     "dev": "nodemon src/index.ts",
     "prepare": "husky install"
